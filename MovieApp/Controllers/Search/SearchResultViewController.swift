@@ -13,11 +13,16 @@ class SearchResultViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let screenWidth = UIScreen.main.bounds.size.width
+        let horizontalInset: CGFloat = 16
+        let width = screenWidth / 3 - horizontalInset
+        let height = width * 1.5
+        
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: screenWidth / 3 - 10, height: 200)
+        layout.itemSize = CGSize(width: width, height: height)
         layout.minimumInteritemSpacing = 0
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.contentInset = UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
         cv.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
         return cv
     }()
