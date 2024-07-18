@@ -101,6 +101,7 @@ enum HttpMethod: String {
 }
 
 enum EndpointPath: String {
+    case nowPlayingMovies = "movie/now_playing"
     case trendingMovies = "trending/movie/day"
     case trendingTvs = "trending/tv/day"
     case upcomingMovies = "movie/upcoming"

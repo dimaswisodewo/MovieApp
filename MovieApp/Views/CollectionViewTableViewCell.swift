@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CollectionViewTableViewCellDelegate: AnyObject {
-    func didTapCell(_ title: Title)
+    func collectionViewTableViewDidTapCell(_ title: Title)
 }
 
 class CollectionViewTableViewCell: UITableViewCell {
@@ -75,6 +75,6 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let model = titles[indexPath.row]
-        delegate?.didTapCell(model)
+        delegate?.collectionViewTableViewDidTapCell(model)
     }
 }

@@ -35,6 +35,21 @@ class HomeViewModel {
     
     // MARK: - Fetch from API
     
+    func getNowPlayingMovies(completion: (() -> Void)?, onError: (() -> Void)?) {
+        let endpoint = Endpoint(path: .nowPlayingMovies, additionalPath: nil, query: nil, method: .GET)
+        NetworkManager.shared.sendRequest(type: TitleResponse.self, endpoint: endpoint) { [weak self] result in
+            switch result {
+            case .success(let titleResponse):
+                guard let self = self else { return }
+                self.titles[String.trendingMovies, default: []] = titleResponse.results
+                completion?()
+                
+            case .failure(_):
+                onError?()
+            }
+        }
+    }
+    
     func getTrendingMovies(completion: (() -> Void)?, onError: (() -> Void)?) {
         let endpoint = Endpoint(path: .trendingMovies, additionalPath: nil, query: nil, method: .GET)
         NetworkManager.shared.sendRequest(type: TitleResponse.self, endpoint: endpoint) { [weak self] result in
@@ -111,6 +126,14 @@ class HomeViewModel {
     }
     
     // MARK: - Get fetched data
+    
+    func getNowPlayingMovies() -> [Title]? {
+        guard let trendingMovies = titles[String.nowPlayingMovies] else {
+            return nil
+        }
+        
+        return trendingMovies
+    }
     
     func getTrendingMovies() -> [Title]? {
         guard let trendingMovies = titles[String.trendingMovies] else {
@@ -194,6 +217,7 @@ class HomeViewModel {
 }
 
 extension String {
+    fileprivate static let nowPlayingMovies = "Now Playing Movies"
     fileprivate static let trendingMovies = "Trending Movies"
     fileprivate static let trendingTvs = "Trending Tvs"
     fileprivate static let popularMovies = "Popular Movies"

@@ -8,11 +8,12 @@
 import UIKit
 
 fileprivate enum Sections: Int, CaseIterable {
-    case trendingMovies = 0
-    case trendingTvs = 1
-    case popular = 2
-    case upcoming = 3
-    case topRated = 4
+    case nowPlaying = 0
+    case trendingMovies = 1
+    case trendingTvs = 2
+    case popular = 3
+    case upcoming = 4
+    case topRated = 5
 }
 
 class HomeViewController: UIViewController {
@@ -23,6 +24,7 @@ class HomeViewController: UIViewController {
         tableView.allowsSelection = false
         tableView.separatorStyle = .none
         tableView.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
+        tableView.register(CollectionParallaxTableViewCell.self, forCellReuseIdentifier: CollectionParallaxTableViewCell.identifier)
         return tableView
     }()
     
@@ -88,6 +90,14 @@ class HomeViewController: UIViewController {
     }
     
     private func fetchData() {
+        viewModel.getNowPlayingMovies {
+            DispatchQueue.main.async { [weak self] in
+                self?.homeFeedTable.reloadSections(IndexSet(integer: Sections.nowPlaying.rawValue), with: .fade)
+            }
+        } onError: {
+            
+        }
+        
         viewModel.getTrendingMovies { [weak self] in
             DispatchQueue.main.async {
                 self?.homeFeedTable.reloadSections(IndexSet(integer: Sections.trendingMovies.rawValue), with: .fade)
@@ -163,7 +173,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
             return "Top Rated Movies"
             
         default:
-            return ""
+            return nil
         }
     }
     
@@ -172,12 +182,20 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == Sections.nowPlaying.rawValue {
+            let inset: CGFloat = 16
+            let width = UIScreen.main.bounds.width - (CGFloat(2) * inset)
+            let height = width / 0.67
+            return height
+        }
+        
         return 200
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case Sections.trendingMovies.rawValue,
+        case Sections.nowPlaying.rawValue,
+            Sections.trendingMovies.rawValue,
             Sections.trendingTvs.rawValue,
             Sections.popular.rawValue,
             Sections.upcoming.rawValue,
@@ -190,6 +208,20 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
+        case Sections.nowPlaying.rawValue:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionParallaxTableViewCell.identifier, for: indexPath) as? CollectionParallaxTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            guard let trendingMovies = viewModel.getTrendingMovies() else {
+                return cell
+            }
+            
+            cell.configure(with: trendingMovies)
+            cell.delegate = self
+            
+            return cell
+            
         case Sections.trendingMovies.rawValue:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {
                 return UITableViewCell()
@@ -269,7 +301,24 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - CollectionViewTableViewCellDelegate
 
 extension HomeViewController: CollectionViewTableViewCellDelegate {
-    func didTapCell(_ title: Title) {
+    func collectionViewTableViewDidTapCell(_ title: Title) {
+        let preview = TitlePreviewViewController()
+        preview.configure(with: TitlePreview(
+            id: title.id,
+            title: title.originalTitle ?? title.originalName ?? "Null",
+            overview: title.overview ?? title.originalName ?? "Null"
+        ))
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController?.present(preview, animated: true)
+        }
+    }
+}
+
+// MARK: - CollectionParallaxTableViewCellDelegate
+
+extension HomeViewController: CollectionParallaxTableViewCellDelegate {
+    func collectionParallaxDidTapCell(_ title: Title) {
         let preview = TitlePreviewViewController()
         preview.configure(with: TitlePreview(
             id: title.id,
