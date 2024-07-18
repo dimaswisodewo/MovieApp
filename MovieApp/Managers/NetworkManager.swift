@@ -10,25 +10,21 @@ import Foundation
 class NetworkManager {
     static let shared: NetworkManager = NetworkManager()
     
-    private let headers = [
-        "accept": "application/json",
-        "Authorization": "Bearer \(Constants.accessTokenAuth)"
-    ]
-    
     private init() {}
     
-    func sendRequest<T: Codable>(type: T.Type, endpoint: Endpoint, completion: @escaping (Result<T, Error>) -> Void) {
+    @discardableResult
+    func sendRequest<T: Codable>(type: T.Type, endpoint: Endpoint, header: [String: String]? = Constants.tmdbHeader, completion: @escaping (Result<T, Error>) -> Void) -> URLSessionDataTask? {
         guard let url = URL(string: endpoint.getURL()) else {
             completion(.failure(APIError.failedToCreateURL))
 #if DEBUG
             print(APIError.failedToCreateURL)
 #endif
-            return
+            return nil
         }
         
         var request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 10)
         request.httpMethod = endpoint.getMethod
-        request.allHTTPHeaderFields = headers
+        request.allHTTPHeaderFields = header
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data, error == nil {
@@ -50,6 +46,8 @@ class NetworkManager {
         }
         
         task.resume()
+        
+        return task
     }
 }
 
@@ -61,7 +59,7 @@ enum APIError: Error {
 }
 
 struct Endpoint {
-    private let baseUrl: String = "https://api.themoviedb.org/3/"
+    private let baseUrl: String
     private let path: EndpointPath?
     private let additionalPath: String?
     private let query: String?
@@ -71,7 +69,8 @@ struct Endpoint {
         return method.rawValue
     }
     
-    init(path: EndpointPath?, additionalPath: String?, query: String?, method: HttpMethod) {
+    init(baseUrl: String = Constants.tmdbBaseURL, path: EndpointPath?, additionalPath: String?, query: String?, method: HttpMethod) {
+        self.baseUrl = baseUrl
         self.path = path
         self.additionalPath = additionalPath
         self.query = query
@@ -109,4 +108,6 @@ enum EndpointPath: String {
     case topRatedMovies = "movie/top_rated"
     case topRatedTvs = "tv/top_rated"
     case popularMovies = "movie/popular"
+    
+    case search = "search"
 }

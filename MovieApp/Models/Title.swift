@@ -14,7 +14,8 @@ struct TitleResponse: Codable {
 struct Title: Codable {
     let id: Int
     let mediaType: String?
-    let originalTitle: String?
+    let originalTitle: String? // nil on tv
+    let originalName: String? // nil on movie
     let posterPath: String?
     let overview: String?
     let voteCount: Int
@@ -25,6 +26,7 @@ struct Title: Codable {
         case id, overview
         case mediaType = "media_type"
         case originalTitle = "original_title"
+        case originalName = "original_name"
         case posterPath = "poster_path"
         case voteCount = "vote_count"
         case releaseDate = "release_date"

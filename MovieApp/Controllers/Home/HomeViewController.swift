@@ -222,6 +222,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension HomeViewController: CollectionViewTableViewCellDelegate {
     func didTapCell(_ title: Title) {
-        print("Did tap cell: \(title.originalTitle ?? title.id.description)")
+        let preview = TitlePreviewViewController()
+        preview.configure(with: TitlePreview(
+            id: title.id,
+            title: title.originalTitle ?? title.originalName ?? "Null",
+            overview: title.overview ?? title.originalName ?? "Null"
+        ))
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController?.present(preview, animated: true)
+        }
     }
 }
