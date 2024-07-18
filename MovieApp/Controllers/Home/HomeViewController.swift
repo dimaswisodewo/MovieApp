@@ -38,12 +38,53 @@ class HomeViewController: UIViewController {
         homeFeedTable.delegate = self
         homeFeedTable.dataSource = self
         
+        configureNavbar()
+        
         fetchData()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
+    }
+    
+    private func configureNavbar() {
+        guard let image = UIImage(named: "Netflix Logo Initial")?.withRenderingMode(.alwaysOriginal)
+        else { return }
+        
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        imageView.image = image
+        
+        let imageContainer = UIControl(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        imageContainer.addTarget(self, action: #selector(didTapLogoButton), for: .touchUpInside)
+        imageContainer.addSubview(imageView)
+        let leftBarButtonItem = UIBarButtonItem(customView: imageContainer)
+        leftBarButtonItem.width = 20
+        
+        let searchImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        searchImageView.image = UIImage(systemName: "magnifyingglass")
+        let searchContainer = UIControl(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        searchContainer.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
+        searchContainer.addSubview(searchImageView)
+        
+        navigationItem.leftBarButtonItem = leftBarButtonItem
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(image: UIImage(systemName: "rectangle.portrait.and.arrow.forward"), style: .done, target: self, action: nil),
+            UIBarButtonItem(customView: searchContainer)
+        ]
+        
+        navigationController?.navigationBar.tintColor = .label
+    }
+    
+    @objc
+    private func didTapLogoButton() {
+        print("tap logo")
+    }
+    
+    @objc
+    private func didTapSearchButton() {
+        let searchVC = SearchViewController()
+        navigationController?.pushViewController(searchVC, animated: true)
     }
     
     private func fetchData() {
@@ -92,6 +133,13 @@ class HomeViewController: UIViewController {
 // MARK: - UITableViewDelegate, UITableViewDataSource
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let defaultOffset = view.safeAreaInsets.top
+        let offset = scrollView.contentOffset.y + defaultOffset
+        
+        navigationController?.navigationBar.transform = CGAffineTransform(translationX: 0, y: min(0, -offset))
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return Sections.allCases.count

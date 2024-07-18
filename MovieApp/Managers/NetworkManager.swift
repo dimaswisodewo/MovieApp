@@ -108,6 +108,6 @@ enum EndpointPath: String {
     case topRatedMovies = "movie/top_rated"
     case topRatedTvs = "tv/top_rated"
     case popularMovies = "movie/popular"
-    
+    case searchCollection = "search/collection"
     case search = "search"
 }

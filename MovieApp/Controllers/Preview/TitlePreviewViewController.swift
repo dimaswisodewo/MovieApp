@@ -13,6 +13,7 @@ class TitlePreviewViewController: UIViewController {
     private let webView: WKWebView = {
         let webView = WKWebView()
         webView.underPageBackgroundColor = .systemBackground
+        webView.isOpaque = false
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.isHidden = true
         return webView
@@ -41,8 +42,11 @@ class TitlePreviewViewController: UIViewController {
     private var titleTopEqualSuperviewTop: NSLayoutConstraint!
     private var titleTopEqualWebviewBottom: NSLayoutConstraint!
     
+    var onDismiss: (() -> Void)?
+    
     deinit {
         viewModel.ongoingTask?.cancel()
+        onDismiss?()
     }
     
     override func viewDidLoad() {

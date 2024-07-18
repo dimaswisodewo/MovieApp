@@ -18,9 +18,9 @@ struct Title: Codable {
     let originalName: String? // nil on movie
     let posterPath: String?
     let overview: String?
-    let voteCount: Int
+    let voteCount: Int?
     let releaseDate: String?
-    let voteAverage: Double
+    let voteAverage: Double?
     
     enum CodingKeys: String, CodingKey {
         case id, overview
