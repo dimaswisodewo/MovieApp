@@ -38,6 +38,9 @@ class TitlePreviewViewController: UIViewController {
     
     private let viewModel = TitlePreviewViewModel()
     
+    private var titleTopEqualSuperviewTop: NSLayoutConstraint!
+    private var titleTopEqualWebviewBottom: NSLayoutConstraint!
+    
     deinit {
         viewModel.ongoingTask?.cancel()
     }
@@ -47,25 +50,28 @@ class TitlePreviewViewController: UIViewController {
 
         view.backgroundColor = .systemBackground
         
-        setupViews()
-    }
-
-    private func setupViews() {
         view.addSubview(webView)
         view.addSubview(titleLabel)
         view.addSubview(overviewLabel)
         
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
         let insets = view.safeAreaInsets
         
         NSLayoutConstraint.activate([
-            webView.topAnchor.constraint(equalTo: view.topAnchor, constant: insets.top + 14),
+            webView.topAnchor.constraint(equalTo: view.topAnchor, constant: insets.top + 18),
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             webView.heightAnchor.constraint(equalToConstant: 380)
         ])
         
+        titleTopEqualSuperviewTop = titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: insets.top + 18)
+        titleTopEqualWebviewBottom = titleLabel.topAnchor.constraint(equalTo: webView.bottomAnchor, constant: 12)
+        
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: webView.bottomAnchor, constant: 12),
+            titleTopEqualSuperviewTop,
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 10)
@@ -89,6 +95,14 @@ class TitlePreviewViewController: UIViewController {
             DispatchQueue.main.async {
                 self?.webView.isHidden = false
                 self?.webView.load(URLRequest(url: url))
+                
+                // Update constraint
+                self?.titleTopEqualSuperviewTop.isActive = false
+                self?.titleTopEqualWebviewBottom.isActive = true
+                
+                UIView.animate(withDuration: 0.5, animations: {
+                    self?.view.layoutIfNeeded()
+                })
             }
         }
     }
