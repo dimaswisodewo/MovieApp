@@ -310,18 +310,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - CollectionViewTableViewCellDelegate
 
 extension HomeViewController: CollectionViewTableViewCellDelegate {
-    func collectionViewTableViewDidTapCell(_ title: Title, poster: UIImage?) {
-//        let preview = TitlePreviewViewController()
-//        preview.configure(with: TitlePreview(
-//            id: title.id,
-//            title: title.originalTitle ?? title.originalName ?? "Null",
-//            overview: title.overview ?? title.originalName ?? "Null"
-//        ))
-//        
-//        DispatchQueue.main.async { [weak self] in
-//            self?.navigationController?.present(preview, animated: true)
-//        }
-        
+    func collectionViewTableViewDidTapCell(_ title: Title, poster: UIImage?) {        
         let detailVC = TitleDetailViewController(title: title, poster: poster)
         DispatchQueue.main.async { [weak self] in
             self?.navigationController?.pushViewController(detailVC, animated: true)

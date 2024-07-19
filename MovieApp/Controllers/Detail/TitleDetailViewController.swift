@@ -13,7 +13,6 @@ class TitleDetailViewController: UIViewController {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
-        imageView.backgroundColor = .gray
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -30,9 +29,20 @@ class TitleDetailViewController: UIViewController {
         return button
     }()
     
+    private let watchTrailerButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("Watch Trailer", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+        button.backgroundColor = .systemRed
+        button.layer.cornerRadius = 12
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.font = .systemFont(ofSize: 20, weight: .bold)
         label.numberOfLines = 3
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +69,16 @@ class TitleDetailViewController: UIViewController {
     
     private let overviewLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.numberOfLines = 0
+        label.textColor = .label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let ratingLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
         label.numberOfLines = 0
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -75,6 +94,9 @@ class TitleDetailViewController: UIViewController {
         posterTemp = poster
         
         super.init(nibName: nil, bundle: nil)
+        
+        // Disable watch trailer, can't search trailer on youtube when title is nil
+        watchTrailerButton.isEnabled = !(title.originalTitle == nil && title.originalName == nil)
         
         fetchData()
     }
@@ -92,6 +114,8 @@ class TitleDetailViewController: UIViewController {
         titleLabel.text = viewModel.title.originalTitle ?? viewModel.title.originalName
         durationLabel.text = viewModel.title.releaseDate
         overviewLabel.text = viewModel.title.overview
+        
+        ratingLabel.text = "\(viewModel.title.voteAverage?.description ?? "0") (\(viewModel.title.voteCount?.description ?? "0") votes)"
         
         setupViews()
         setupButtonEvents()
@@ -147,13 +171,20 @@ class TitleDetailViewController: UIViewController {
         hdLabelContainer.addSubview(hdLabel)
         hdLabel.frame = hdLabelContainer.bounds
         
+        let starImageView = UIImageView(image: UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate))
+        starImageView.tintColor = .systemOrange
+        starImageView.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(backdropImageView)
         view.addSubview(backButton)
         view.addSubview(titleLabel)
         view.addSubview(durationLabel)
         view.addSubview(genreLabel)
         view.addSubview(overviewLabel)
+        view.addSubview(ratingLabel)
+        view.addSubview(watchTrailerButton)
         view.addSubview(hdLabelContainer)
+        view.addSubview(starImageView)
         
         let guide = view.safeAreaLayoutGuide
         
@@ -175,14 +206,21 @@ class TitleDetailViewController: UIViewController {
             genreLabel.bottomAnchor.constraint(equalTo: backdropImageView.bottomAnchor, constant: -20),
             genreLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             genreLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            genreLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 10)
+            genreLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 26)
         ])
         
         NSLayoutConstraint.activate([
             durationLabel.bottomAnchor.constraint(equalTo: genreLabel.topAnchor, constant: -12),
             durationLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            durationLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 10),
-            durationLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 10)
+            durationLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 26),
+            durationLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 26)
+        ])
+        
+        NSLayoutConstraint.activate([
+            titleLabel.bottomAnchor.constraint(equalTo: durationLabel.topAnchor, constant: -12),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 10)
         ])
         
         NSLayoutConstraint.activate([
@@ -200,10 +238,17 @@ class TitleDetailViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            titleLabel.bottomAnchor.constraint(equalTo: durationLabel.topAnchor, constant: -12),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 10)
+            ratingLabel.centerYAnchor.constraint(equalTo: hdLabelContainer.centerYAnchor),
+            ratingLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            ratingLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 10),
+            ratingLabel.heightAnchor.constraint(equalToConstant: 26)
+        ])
+        
+        NSLayoutConstraint.activate([
+            starImageView.centerYAnchor.constraint(equalTo: ratingLabel.centerYAnchor),
+            starImageView.trailingAnchor.constraint(equalTo: ratingLabel.leadingAnchor, constant: -4),
+            starImageView.heightAnchor.constraint(equalToConstant: 20),
+            starImageView.widthAnchor.constraint(equalToConstant: 20)
         ])
         
         NSLayoutConstraint.activate([
@@ -212,10 +257,18 @@ class TitleDetailViewController: UIViewController {
             overviewLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             overviewLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 10)
         ])
+        
+        NSLayoutConstraint.activate([
+            watchTrailerButton.topAnchor.constraint(equalTo: overviewLabel.bottomAnchor, constant: 20),
+            watchTrailerButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            watchTrailerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            watchTrailerButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
     
     private func setupButtonEvents() {
         backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        watchTrailerButton.addTarget(self, action: #selector(didTapWatchTrailerButton), for: .touchUpInside)
     }
     
     private func fetchData() {
@@ -250,5 +303,21 @@ class TitleDetailViewController: UIViewController {
     @objc
     private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc
+    private func didTapWatchTrailerButton() {
+        let title = viewModel.title
+        
+        let preview = TitlePreviewViewController()
+        preview.configure(with: TitlePreview(
+            id: title.id,
+            title: title.originalTitle ?? title.originalName ?? "Null",
+            overview: title.overview ?? title.originalName ?? "Null"
+        ))
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController?.present(preview, animated: true)
+        }
     }
 }
