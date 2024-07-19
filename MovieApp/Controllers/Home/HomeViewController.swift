@@ -155,30 +155,39 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         return Sections.allCases.count
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        var title = ""
+        var isTitleCenter = false
+        
         switch section {
+        case Sections.nowPlaying.rawValue:
+            title = "Now Playing"
+            isTitleCenter = true
+            
         case Sections.trendingMovies.rawValue:
-            return "Trending Movies"
+            title = "Trending Movies"
             
         case Sections.trendingTvs.rawValue:
-            return "Trending Tvs"
+            title = "Trending Tvs"
             
         case Sections.popular.rawValue:
-            return "Popular Movies"
+            title = "Popular Movies"
             
         case Sections.upcoming.rawValue:
-            return "Upcoming Movies"
+            title = "Upcoming Movies"
             
         case Sections.topRated.rawValue:
-            return "Top Rated Movies"
+            title = "Top Rated Movies"
             
         default:
             return nil
         }
+        
+        return HeaderView(title: title, textAlignment: isTitleCenter ? .center : .left)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 45
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

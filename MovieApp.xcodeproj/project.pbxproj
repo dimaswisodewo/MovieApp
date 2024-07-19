@@ -28,6 +28,7 @@
 		38B737CA2C48E7D200FD43C9 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737C92C48E7D200FD43C9 /* SearchViewModel.swift */; };
 		38B737CE2C48F33F00FD43C9 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737CD2C48F33F00FD43C9 /* SearchResponse.swift */; };
 		38B737D02C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737CF2C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift */; };
+		38B737D22C4A58D200FD43C9 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737D12C4A58D200FD43C9 /* HeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		38B737C92C48E7D200FD43C9 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		38B737CD2C48F33F00FD43C9 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 		38B737CF2C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionParallaxTableViewCell.swift; sourceTree = "<group>"; };
+		38B737D12C4A58D200FD43C9 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 				38B737B12C482BB600FD43C9 /* TitleCollectionViewCell.swift */,
 				38B737B72C4851DC00FD43C9 /* UIImageView+Cache.swift */,
 				38B737CF2C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift */,
+				38B737D12C4A58D200FD43C9 /* HeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 				38B737CE2C48F33F00FD43C9 /* SearchResponse.swift in Sources */,
 				38B737AC2C48272600FD43C9 /* Title.swift in Sources */,
 				38B737C32C48C49000FD43C9 /* YoutubeResponse.swift in Sources */,
+				38B737D22C4A58D200FD43C9 /* HeaderView.swift in Sources */,
 				38B737BF2C48B9CD00FD43C9 /* TitlePreviewViewController.swift in Sources */,
 				38B737A52C48205200FD43C9 /* Constants.swift in Sources */,
 				38B737C12C48C3A400FD43C9 /* TitlePreviewViewModel.swift in Sources */,
