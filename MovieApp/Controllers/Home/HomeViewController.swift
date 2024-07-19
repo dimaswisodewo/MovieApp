@@ -41,6 +41,7 @@ class HomeViewController: UIViewController {
         homeFeedTable.dataSource = self
         
         configureNavbar()
+        configureRefreshControl()
         
         fetchData()
     }
@@ -82,6 +83,20 @@ class HomeViewController: UIViewController {
         ]
         
         navigationController?.navigationBar.tintColor = .label
+    }
+    
+    private func configureRefreshControl() {
+        homeFeedTable.refreshControl = UIRefreshControl()
+        homeFeedTable.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+    }
+    
+    @objc
+    private func handleRefreshControl() {
+        fetchData()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.homeFeedTable.refreshControl?.endRefreshing()
+        }
     }
     
     @objc
