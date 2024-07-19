@@ -112,7 +112,7 @@ class TitleDetailViewController: UIViewController {
         
         backdropImageView.image = posterTemp
         titleLabel.text = viewModel.title.originalTitle ?? viewModel.title.originalName
-        durationLabel.text = viewModel.title.releaseDate
+        durationLabel.text = viewModel.title.releaseDate?.split(separator: "-").first?.description
         overviewLabel.text = viewModel.title.overview
         
         ratingLabel.text = "\(viewModel.title.voteAverage?.description ?? "0") (\(viewModel.title.voteCount?.description ?? "0") votes)"
