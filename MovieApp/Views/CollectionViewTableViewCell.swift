@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CollectionViewTableViewCellDelegate: AnyObject {
-    func collectionViewTableViewDidTapCell(_ title: Title)
+    func collectionViewTableViewDidTapCell(_ title: Title, poster: UIImage?)
 }
 
 class CollectionViewTableViewCell: UITableViewCell {
@@ -74,7 +74,11 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TitleCollectionViewCell else { return }
+        
         let model = titles[indexPath.row]
-        delegate?.collectionViewTableViewDidTapCell(model)
+        let image = cell.posterImage
+        
+        delegate?.collectionViewTableViewDidTapCell(model, poster: image)
     }
 }

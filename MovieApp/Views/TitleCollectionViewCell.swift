@@ -20,6 +20,10 @@ class TitleCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    var posterImage: UIImage? {
+        return posterImageView.image
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(posterImageView)
@@ -43,7 +47,7 @@ class TitleCollectionViewCell: UICollectionViewCell {
     
     func configure(with model: Title) {
         guard let posterPath = model.posterPath,
-              let url = URL(string: "\(Constants.imagePreviewBaseURL)/\(posterPath)") else {
+              let url = URL(string: "\(Constants.imagePreviewBaseURL)\(posterPath)") else {
             return
         }
         

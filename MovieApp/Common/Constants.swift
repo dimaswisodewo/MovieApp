@@ -12,6 +12,7 @@ struct Constants {
     static let accessTokenAuth = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNmQ3MTFiMjY3NzVhMGY4MDcxZmVjNjE4Yzc5YmQ2NCIsIm5iZiI6MTcyMTIzMTUzMC40MTU1NDgsInN1YiI6IjYzY2RmZDU1N2FlY2M2MDA4YWYxMTY5NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._H0d9EMG_WKuK8wwDUMLstDZ2I6ntuj50lRd6i0RtWs"
     static let tmdbBaseURL = "https://api.themoviedb.org/3/"
     static let imagePreviewBaseURL = "https://image.tmdb.org/t/p/w500/"
+    static let imageBackdropBaseURL = "https://image.tmdb.org/t/p/w1280/"
     static let tmdbHeader = [
         "accept": "application/json",
         "Authorization": "Bearer \(Constants.accessTokenAuth)"

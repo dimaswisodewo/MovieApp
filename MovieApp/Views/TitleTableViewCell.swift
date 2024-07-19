@@ -116,7 +116,7 @@ class TitleTableViewCell: UITableViewCell {
         descriptionLabel.text = "\(model.voteAverage?.description ?? "") (\(model.voteCount?.description ?? "") votes)"
         
         guard let posterPath = model.posterPath,
-              let url = URL(string: "\(Constants.imagePreviewBaseURL)/\(posterPath)") else {
+              let url = URL(string: "\(Constants.imagePreviewBaseURL)\(posterPath)") else {
             return
         }
         

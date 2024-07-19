@@ -7,6 +7,11 @@
 
 import Foundation
 
+enum Category {
+    case movie
+    case tv
+}
+
 struct TitleResponse: Codable {
     let results: [Title]
 }
@@ -21,6 +26,10 @@ struct Title: Codable {
     let voteCount: Int?
     let releaseDate: String?
     let voteAverage: Double?
+    
+    var category: Category {
+        return originalTitle == nil ? .tv : .movie
+    }
     
     enum CodingKeys: String, CodingKey {
         case id, overview

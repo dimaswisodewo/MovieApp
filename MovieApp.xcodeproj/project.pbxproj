@@ -30,6 +30,9 @@
 		38B737D02C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737CF2C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift */; };
 		38B737D22C4A58D200FD43C9 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737D12C4A58D200FD43C9 /* HeaderView.swift */; };
 		38B737D42C4A62D500FD43C9 /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737D32C4A62D500FD43C9 /* TitleTableViewCell.swift */; };
+		38B737D72C4AB22900FD43C9 /* TitleDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737D62C4AB22900FD43C9 /* TitleDetailViewController.swift */; };
+		38B737D92C4AB23400FD43C9 /* TitleDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737D82C4AB23400FD43C9 /* TitleDetailViewModel.swift */; };
+		38B737DB2C4AB34500FD43C9 /* TitleDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737DA2C4AB34500FD43C9 /* TitleDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +61,9 @@
 		38B737CF2C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionParallaxTableViewCell.swift; sourceTree = "<group>"; };
 		38B737D12C4A58D200FD43C9 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		38B737D32C4A62D500FD43C9 /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
+		38B737D62C4AB22900FD43C9 /* TitleDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDetailViewController.swift; sourceTree = "<group>"; };
+		38B737D82C4AB23400FD43C9 /* TitleDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDetailViewModel.swift; sourceTree = "<group>"; };
+		38B737DA2C4AB34500FD43C9 /* TitleDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +134,7 @@
 				38B737B92C48B90300FD43C9 /* TitlePreview.swift */,
 				38B737C22C48C49000FD43C9 /* YoutubeResponse.swift */,
 				38B737CD2C48F33F00FD43C9 /* SearchResponse.swift */,
+				38B737DA2C4AB34500FD43C9 /* TitleDetail.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -135,6 +142,7 @@
 		38B737AD2C48280D00FD43C9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				38B737D52C4AB21200FD43C9 /* Detail */,
 				38B737BC2C48B97700FD43C9 /* Home */,
 				38B737BD2C48B99200FD43C9 /* Preview */,
 				38B737C42C48E30100FD43C9 /* Search */,
@@ -181,6 +189,15 @@
 				38B737C92C48E7D200FD43C9 /* SearchViewModel.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		38B737D52C4AB21200FD43C9 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				38B737D62C4AB22900FD43C9 /* TitleDetailViewController.swift */,
+				38B737D82C4AB23400FD43C9 /* TitleDetailViewModel.swift */,
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		7F61B9AC7C6586F16EBFADD7 /* Pods */ = {
@@ -266,8 +283,11 @@
 				38B737B22C482BB600FD43C9 /* TitleCollectionViewCell.swift in Sources */,
 				38B737912C481E3A00FD43C9 /* AppDelegate.swift in Sources */,
 				38B737A82C4820AB00FD43C9 /* NetworkManager.swift in Sources */,
+				38B737D72C4AB22900FD43C9 /* TitleDetailViewController.swift in Sources */,
 				38B737B02C48294600FD43C9 /* CollectionViewTableViewCell.swift in Sources */,
 				38B737D42C4A62D500FD43C9 /* TitleTableViewCell.swift in Sources */,
+				38B737DB2C4AB34500FD43C9 /* TitleDetail.swift in Sources */,
+				38B737D92C4AB23400FD43C9 /* TitleDetailViewModel.swift in Sources */,
 				38B737932C481E3A00FD43C9 /* SceneDelegate.swift in Sources */,
 				38B737CE2C48F33F00FD43C9 /* SearchResponse.swift in Sources */,
 				38B737AC2C48272600FD43C9 /* Title.swift in Sources */,
