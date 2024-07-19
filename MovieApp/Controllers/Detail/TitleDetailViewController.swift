@@ -12,6 +12,7 @@ class TitleDetailViewController: UIViewController {
     private let backdropImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .gray
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -99,6 +100,10 @@ class TitleDetailViewController: UIViewController {
         watchTrailerButton.isEnabled = !(title.originalTitle == nil && title.originalName == nil)
         
         fetchData()
+    }
+    
+    deinit {
+        viewModel.ongoingTask?.cancel()
     }
     
     required init?(coder: NSCoder) {

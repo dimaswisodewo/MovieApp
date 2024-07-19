@@ -12,6 +12,8 @@ class TitleDetailViewModel {
     let title: Title
     private(set) var titleDetail: TitleDetail?
     
+    private(set) var ongoingTask: URLSessionDataTask?
+    
     init(title: Title) {
         self.title = title
     }
@@ -24,7 +26,7 @@ class TitleDetailViewModel {
             method: .GET
         )
         
-        NetworkManager.shared.sendRequest(type: TitleDetail.self, endpoint: endpoint) { [weak self] result in
+        ongoingTask = NetworkManager.shared.sendRequest(type: TitleDetail.self, endpoint: endpoint) { [weak self] result in
             switch result {
             case .success(let titleDetail):
                 self?.titleDetail = titleDetail
@@ -33,6 +35,8 @@ class TitleDetailViewModel {
             case .failure(_):
                 break
             }
+            
+            self?.ongoingTask = nil
         }
     }
 }
