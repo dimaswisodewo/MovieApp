@@ -38,7 +38,7 @@ class SearchViewModel {
         let finalQuery = queries.map({ "\($0.key)=\($0.value)" })
             .joined(separator: "&")
         
-        let endpoint = Endpoint(path: .searchCollection, additionalPath: nil, query: finalQuery, method: .GET)
+        let endpoint = Endpoint(path: .searchMovies, additionalPath: nil, query: finalQuery, method: .GET)
         
         ongoingTask = NetworkManager.shared.sendRequest(type: TitleResponse.self, endpoint: endpoint) { [weak self] result in
             switch result {

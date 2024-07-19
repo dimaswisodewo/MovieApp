@@ -15,6 +15,7 @@ class TitleTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 12
         imageView.layer.masksToBounds = true
+        imageView.backgroundColor = .gray
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -31,7 +32,7 @@ class TitleTableViewCell: UITableViewCell {
     private let subtitleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.font = .systemFont(ofSize: 14, weight: .bold)
         label.textColor = .gray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -56,11 +57,22 @@ class TitleTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        posterImageView.image = nil
+    }
+    
     private func setupView() {
+        let starImageView = UIImageView(image: UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate))
+        starImageView.tintColor = .systemOrange
+        starImageView.translatesAutoresizingMaskIntoConstraints = false
+        
         contentView.addSubview(posterImageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(subtitleLabel)
         contentView.addSubview(descriptionLabel)
+        contentView.addSubview(starImageView)
         
         NSLayoutConstraint.activate([
             posterImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -78,23 +90,30 @@ class TitleTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            subtitleLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            subtitleLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            subtitleLabel.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 12),
+            subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             subtitleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 10)
         ])
         
         NSLayoutConstraint.activate([
-            descriptionLabel.leadingAnchor.constraint(equalTo: subtitleLabel.leadingAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: subtitleLabel.trailingAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: posterImageView.bottomAnchor),
+            starImageView.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 12),
+            starImageView.bottomAnchor.constraint(equalTo: posterImageView.bottomAnchor),
+            starImageView.widthAnchor.constraint(equalToConstant: 20),
+            starImageView.heightAnchor.constraint(equalToConstant: 20)
+        ])
+        
+        NSLayoutConstraint.activate([
+            descriptionLabel.leadingAnchor.constraint(equalTo: starImageView.trailingAnchor, constant: 4),
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            descriptionLabel.centerYAnchor.constraint(equalTo: starImageView.centerYAnchor),
             descriptionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 10)
         ])
     }
     
     func configure(with model: Title) {
         titleLabel.text = model.originalTitle ?? model.originalName ?? "Null"
-        subtitleLabel.text = model.releaseDate ?? "Null"
-        descriptionLabel.text = "Null"
+        subtitleLabel.text = model.releaseDate?.split(separator: "-").first?.description ?? "Null"
+        descriptionLabel.text = "\(model.voteAverage?.description ?? "") (\(model.voteCount?.description ?? "") votes)"
         
         guard let posterPath = model.posterPath,
               let url = URL(string: "\(Constants.imagePreviewBaseURL)/\(posterPath)") else {
