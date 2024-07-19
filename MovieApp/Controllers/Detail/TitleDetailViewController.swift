@@ -90,6 +90,8 @@ class TitleDetailViewController: UIViewController {
     
     private let posterTemp: UIImage?
     
+    var onPopViewController: (() -> Void)?
+    
     init(title: Title, poster: UIImage?) {
         viewModel = TitleDetailViewModel(title: title)
         posterTemp = poster
@@ -307,7 +309,11 @@ class TitleDetailViewController: UIViewController {
     
     @objc
     private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
+        if let completion = onPopViewController {
+            navigationController?.popViewController(animated: true, completion: completion)
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     @objc

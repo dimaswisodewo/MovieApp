@@ -321,16 +321,10 @@ extension HomeViewController: CollectionViewTableViewCellDelegate {
 // MARK: - CollectionParallaxTableViewCellDelegate
 
 extension HomeViewController: CollectionParallaxTableViewCellDelegate {
-    func collectionParallaxDidTapCell(_ title: Title) {
-        let preview = TitlePreviewViewController()
-        preview.configure(with: TitlePreview(
-            id: title.id,
-            title: title.originalTitle ?? title.originalName ?? "Null",
-            overview: title.overview ?? title.originalName ?? "Null"
-        ))
-        
+    func collectionParallaxDidTapCell(_ title: Title, poster: UIImage?) {
+        let detailVC = TitleDetailViewController(title: title, poster: poster)
         DispatchQueue.main.async { [weak self] in
-            self?.navigationController?.present(preview, animated: true)
+            self?.navigationController?.pushViewController(detailVC, animated: true)
         }
     }
 }

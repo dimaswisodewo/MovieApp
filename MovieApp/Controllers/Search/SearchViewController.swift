@@ -162,18 +162,14 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let preview = TitlePreviewViewController()
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TitleCollectionViewCell else { return }
 
         let title = viewModel.titles[indexPath.item]
+        let poster = cell.posterImage
         
-        preview.configure(with: TitlePreview(
-            id: title.id,
-            title: title.originalTitle ?? title.originalName ?? "Null",
-            overview: title.overview ?? title.originalName ?? "Null"
-        ))
-        
+        let detailVC = TitleDetailViewController(title: title, poster: poster)
         DispatchQueue.main.async { [weak self] in
-            self?.navigationController?.present(preview, animated: true)
+            self?.navigationController?.pushViewController(detailVC, animated: true)
         }
     }
 }

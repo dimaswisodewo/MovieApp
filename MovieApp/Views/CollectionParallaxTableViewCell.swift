@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CollectionParallaxTableViewCellDelegate: AnyObject {
-    func collectionParallaxDidTapCell( _ title: Title)
+    func collectionParallaxDidTapCell( _ title: Title, poster: UIImage?)
 }
 
 class CollectionParallaxTableViewCell: UITableViewCell {
@@ -101,8 +101,11 @@ extension CollectionParallaxTableViewCell: UICollectionViewDelegateFlowLayout, U
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TitleCollectionViewCell else { return }
+        
         let model = titles[indexPath.row]
-        delegate?.collectionParallaxDidTapCell(model)
+        
+        delegate?.collectionParallaxDidTapCell(model, poster: cell.posterImage)
     }
     
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {

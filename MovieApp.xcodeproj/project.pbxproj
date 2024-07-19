@@ -40,6 +40,7 @@
 		38B737E72C4ADE7500FD43C9 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B737E12C4ADE7500FD43C9 /* Poppins-Regular.ttf */; };
 		38B737E82C4ADE7500FD43C9 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B737E22C4ADE7500FD43C9 /* Poppins-Light.ttf */; };
 		38B737EA2C4ADF1F00FD43C9 /* FontUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737E92C4ADF1F00FD43C9 /* FontUtils.swift */; };
+		38B737EC2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737EB2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		38B737E12C4ADE7500FD43C9 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		38B737E22C4ADE7500FD43C9 /* Poppins-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Light.ttf"; sourceTree = "<group>"; };
 		38B737E92C4ADF1F00FD43C9 /* FontUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontUtils.swift; sourceTree = "<group>"; };
+		38B737EB2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +177,7 @@
 				38B737CF2C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift */,
 				38B737D12C4A58D200FD43C9 /* HeaderView.swift */,
 				38B737D32C4A62D500FD43C9 /* TitleTableViewCell.swift */,
+				38B737EB2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				38B737B22C482BB600FD43C9 /* TitleCollectionViewCell.swift in Sources */,
 				38B737912C481E3A00FD43C9 /* AppDelegate.swift in Sources */,
 				38B737A82C4820AB00FD43C9 /* NetworkManager.swift in Sources */,
+				38B737EC2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift in Sources */,
 				38B737D72C4AB22900FD43C9 /* TitleDetailViewController.swift in Sources */,
 				38B737B02C48294600FD43C9 /* CollectionViewTableViewCell.swift in Sources */,
 				38B737D42C4A62D500FD43C9 /* TitleTableViewCell.swift in Sources */,

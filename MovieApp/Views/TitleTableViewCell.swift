@@ -20,6 +20,10 @@ class TitleTableViewCell: UITableViewCell {
         return imageView
     }()
     
+    var poster: UIImage? {
+        return posterImageView.image
+    }
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2

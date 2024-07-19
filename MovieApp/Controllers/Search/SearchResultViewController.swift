@@ -66,23 +66,25 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let preview = TitlePreviewViewController()
-
+        guard let cell = tableView.cellForRow(at: indexPath) as? TitleTableViewCell else { return }
+        
         let title = searchResults[indexPath.item]
+        let poster = cell.poster
+        let detailVC = TitleDetailViewController(title: title, poster: poster)
         
-        preview.configure(with: TitlePreview(
-            id: title.id,
-            title: title.originalTitle ?? title.originalName ?? "Null",
-            overview: title.overview ?? title.originalName ?? "Null"
-        ))
+        guard let parentVC = presentingViewController else { return }
         
-        preview.onDismiss = onDismissPreview
-        
-        DispatchQueue.main.async { [weak self] in
-            guard let parentVC = self?.presentingViewController else { return }
-            parentVC.dismiss(animated: false, completion: {
-                parentVC.navigationController?.present(preview, animated: true)
-            })
+        // Focus on search result after pop detail VC
+        detailVC.onPopViewController = {
+            parentVC.navigationItem.searchController?.isActive = true
+            parentVC.navigationItem.searchController?.searchBar.becomeFirstResponder()
         }
+        
+        // Push detail VC after dismiss seach result VC
+        parentVC.dismiss(animated: true, completion: {
+            DispatchQueue.main.async {
+                parentVC.navigationController?.pushViewController(detailVC, animated: true)
+            }
+        })
     }
 }
