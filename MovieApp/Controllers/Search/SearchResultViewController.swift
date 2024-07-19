@@ -8,23 +8,13 @@
 import UIKit
 
 class SearchResultViewController: UIViewController {
-
+    
     private var searchResults: [Title] = []
     
-    private lazy var collectionView: UICollectionView = {
-        let screenWidth = UIScreen.main.bounds.size.width
-        let horizontalInset: CGFloat = 16
-        let width = screenWidth / 3 - horizontalInset
-        let height = width * 1.5
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: width, height: height)
-        layout.minimumInteritemSpacing = 0
-        
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.contentInset = UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
-        cv.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
-        return cv
+    private let tableView: UITableView = {
+        let tv = UITableView()
+        tv.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.identifier)
+        return tv
     }()
     
     var onDismissPreview: (() -> Void)?
@@ -32,44 +22,50 @@ class SearchResultViewController: UIViewController {
     func configureSearchResults(results: [Title]) {
         searchResults = results
         DispatchQueue.main.async { [weak self] in
-            self?.collectionView.reloadData()
+            self?.tableView.reloadData()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(collectionView)
+        view.addSubview(tableView)
 
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        collectionView.frame = view.bounds
+        tableView.frame = view.bounds
     }
 }
 
-extension SearchResultViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as? TitleCollectionViewCell else {
-            return UICollectionViewCell()
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TitleTableViewCell.identifier, for: indexPath) as? TitleTableViewCell else {
+            return UITableViewCell()
         }
         
-        let title = searchResults[indexPath.item]
-        cell.configure(with: title)
+        let model = searchResults[indexPath.row]
+        cell.configure(with: model)
         
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 160
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         let preview = TitlePreviewViewController()
 
         let title = searchResults[indexPath.item]

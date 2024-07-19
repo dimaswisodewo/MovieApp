@@ -104,7 +104,10 @@ class SearchViewController: UIViewController {
             .sink(receiveValue: { [weak self] finalQuery in
                 guard let self = self else { return }
                 
-                guard finalQuery != self.lastQuery else { return }
+                guard finalQuery != self.lastQuery, !finalQuery.isEmpty else {
+                    self.viewModel.ongoingTask?.cancel()
+                    return
+                }
                 
                 self.lastQuery = finalQuery
                 
@@ -134,7 +137,6 @@ extension SearchViewController: UISearchResultsUpdating {
         guard let query = searchBar.text else { return }
         
         let cleanQuery = query.trimmingCharacters(in: .whitespaces)
-        guard cleanQuery.count > 3 else { return }
         
         searchPublisher.send(cleanQuery)
     }

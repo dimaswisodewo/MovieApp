@@ -29,6 +29,7 @@
 		38B737CE2C48F33F00FD43C9 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737CD2C48F33F00FD43C9 /* SearchResponse.swift */; };
 		38B737D02C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737CF2C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift */; };
 		38B737D22C4A58D200FD43C9 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737D12C4A58D200FD43C9 /* HeaderView.swift */; };
+		38B737D42C4A62D500FD43C9 /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737D32C4A62D500FD43C9 /* TitleTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		38B737CD2C48F33F00FD43C9 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 		38B737CF2C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionParallaxTableViewCell.swift; sourceTree = "<group>"; };
 		38B737D12C4A58D200FD43C9 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		38B737D32C4A62D500FD43C9 /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				38B737B72C4851DC00FD43C9 /* UIImageView+Cache.swift */,
 				38B737CF2C497F8100FD43C9 /* CollectionParallaxTableViewCell.swift */,
 				38B737D12C4A58D200FD43C9 /* HeaderView.swift */,
+				38B737D32C4A62D500FD43C9 /* TitleTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 				38B737912C481E3A00FD43C9 /* AppDelegate.swift in Sources */,
 				38B737A82C4820AB00FD43C9 /* NetworkManager.swift in Sources */,
 				38B737B02C48294600FD43C9 /* CollectionViewTableViewCell.swift in Sources */,
+				38B737D42C4A62D500FD43C9 /* TitleTableViewCell.swift in Sources */,
 				38B737932C481E3A00FD43C9 /* SceneDelegate.swift in Sources */,
 				38B737CE2C48F33F00FD43C9 /* SearchResponse.swift in Sources */,
 				38B737AC2C48272600FD43C9 /* Title.swift in Sources */,

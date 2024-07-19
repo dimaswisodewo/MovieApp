@@ -35,6 +35,12 @@ class TitleCollectionViewCell: UICollectionViewCell {
         posterImageView.frame = contentView.bounds
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        posterImageView.image = nil
+    }
+    
     func configure(with model: Title) {
         guard let posterPath = model.posterPath,
               let url = URL(string: "\(Constants.imagePreviewBaseURL)/\(posterPath)") else {
