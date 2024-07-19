@@ -23,7 +23,7 @@ class TitleTableViewCell: UITableViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.font = FontUtils.shared.getFont(font: .Poppins, weight: .bold, size: 18)
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -32,7 +32,7 @@ class TitleTableViewCell: UITableViewCell {
     private let subtitleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.font = FontUtils.shared.getFont(font: .Poppins, weight: .bold, size: 14)
         label.textColor = .gray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -41,7 +41,7 @@ class TitleTableViewCell: UITableViewCell {
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.font = FontUtils.shared.getFont(font: .Poppins, weight: .regular, size: 14)
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

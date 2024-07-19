@@ -21,7 +21,7 @@ class TitlePreviewViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.font = FontUtils.shared.getFont(font: .Poppins, weight: .bold, size: 20)
         label.textColor = .label
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +30,7 @@ class TitlePreviewViewController: UIViewController {
     
     private let overviewLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.font = FontUtils.shared.getFont(font: .Poppins, weight: .regular, size: 14)
         label.textColor = .label
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false

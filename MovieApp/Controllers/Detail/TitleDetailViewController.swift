@@ -33,7 +33,7 @@ class TitleDetailViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setTitle("Watch Trailer", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
+        button.titleLabel?.font = FontUtils.shared.getFont(font: .Poppins, weight: .bold, size: 16)
         button.backgroundColor = .systemRed
         button.layer.cornerRadius = 12
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ class TitleDetailViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.font = FontUtils.shared.getFont(font: .Poppins, weight: .bold, size: 20)
         label.numberOfLines = 3
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -51,7 +51,7 @@ class TitleDetailViewController: UIViewController {
     
     private let durationLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = FontUtils.shared.getFont(font: .Poppins, weight: .bold, size: 16)
         label.numberOfLines = 1
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +60,7 @@ class TitleDetailViewController: UIViewController {
     
     private let genreLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.font = FontUtils.shared.getFont(font: .Poppins, weight: .regular, size: 14)
         label.numberOfLines = 2
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +69,7 @@ class TitleDetailViewController: UIViewController {
     
     private let overviewLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.font = FontUtils.shared.getFont(font: .Poppins, weight: .regular, size: 14)
         label.numberOfLines = 0
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +78,7 @@ class TitleDetailViewController: UIViewController {
     
     private let ratingLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.font = FontUtils.shared.getFont(font: .Poppins, weight: .regular, size: 14)
         label.numberOfLines = 0
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -153,7 +153,7 @@ class TitleDetailViewController: UIViewController {
             label.text = "HD"
             label.textAlignment = .center
             label.textColor = .yellow
-            label.font = .systemFont(ofSize: 14, weight: .bold)
+            label.font = FontUtils.shared.getFont(font: .Poppins, weight: .bold, size: 14)
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()

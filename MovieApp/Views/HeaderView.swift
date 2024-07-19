@@ -16,7 +16,7 @@ class HeaderView: UIView {
         self.titleLabel = {
             let label = UILabel()
             label.text = title
-            label.font = .systemFont(ofSize: 20, weight: .bold)
+            label.font = FontUtils.shared.getFont(font: .Poppins, weight: .bold, size: 20)
             label.textAlignment = textAlignment
             return label
         }()
