@@ -12,6 +12,10 @@ class TitlePreviewViewModel {
     private(set) var ongoingTask: URLSessionDataTask?
     
     func getSearchYoutubeVideos(query: String, completion: @escaping (String) -> Void) {
+        let headers: [String: String] = [
+            "X-Ios-Bundle-Identifier": "com.dimaswisodewo.MovieApp"
+        ]
+        
         let queries: [String: Any] = [
             "q": "\(query) trailer",
             "key": Constants.YouTube_API_KEY,
@@ -30,7 +34,7 @@ class TitlePreviewViewModel {
             method: .GET
         )
         
-        ongoingTask = NetworkManager.shared.sendRequest(type: YoutubeResponse.self, endpoint: endpoint, header: nil) { [weak self] result in
+        ongoingTask = NetworkManager.shared.sendRequest(type: YoutubeResponse.self, endpoint: endpoint, header: headers) { [weak self] result in
             switch result {
             case .success(let youtubeResponse):
                 guard let videoId = youtubeResponse.items.first?.id.videoId else { return }
