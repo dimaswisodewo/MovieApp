@@ -24,7 +24,7 @@ class TitleDetailViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.backgroundColor = .black.withAlphaComponent(0.5)
         button.layer.cornerRadius = 25
-        button.tintColor = .label
+        button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -44,7 +44,7 @@ class TitleDetailViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .bold)
         label.numberOfLines = 3
-        label.textColor = .label
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -53,7 +53,7 @@ class TitleDetailViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .bold)
         label.numberOfLines = 1
-        label.textColor = .label
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -62,7 +62,7 @@ class TitleDetailViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
         label.numberOfLines = 2
-        label.textColor = .label
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -139,7 +139,7 @@ class TitleDetailViewController: UIViewController {
     
     private func addGradient() {
         let gradient = CAGradientLayer()
-        gradient.colors = [UIColor.clear.cgColor, UIColor.systemBackground.cgColor]
+        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
         gradient.startPoint = CGPoint(x: 0.5, y: 0.6)
         gradient.endPoint = CGPoint(x: 0.5, y: 1)
         gradient.frame = backdropImageView.bounds
