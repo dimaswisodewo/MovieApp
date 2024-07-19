@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SDWebImage
 
 class TitleCollectionViewCell: UICollectionViewCell {
     static let identifier: String = "TitleCollectionViewCell"
@@ -42,7 +41,6 @@ class TitleCollectionViewCell: UICollectionViewCell {
             return
         }
         
-        posterImageView.sd_setImage(with: url)
-//        posterImageView.load(url: url, placeholder: nil)
+        posterImageView.load(url: url, placeholder: nil)
     }
 }
