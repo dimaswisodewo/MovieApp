@@ -7,9 +7,9 @@
 
 import Foundation
 
-enum Category {
-    case movie
-    case tv
+enum Category: String {
+    case movie = "movie"
+    case tv = "tv"
 }
 
 struct TitleResponse: Codable {

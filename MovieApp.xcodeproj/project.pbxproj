@@ -41,6 +41,9 @@
 		38B737E82C4ADE7500FD43C9 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38B737E22C4ADE7500FD43C9 /* Poppins-Light.ttf */; };
 		38B737EA2C4ADF1F00FD43C9 /* FontUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737E92C4ADF1F00FD43C9 /* FontUtils.swift */; };
 		38B737EC2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B737EB2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift */; };
+		38B738122C4BA08E00FD43C9 /* TitleModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 38B738102C4BA08E00FD43C9 /* TitleModel.xcdatamodeld */; };
+		38B738142C4BA2F900FD43C9 /* DataPersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B738132C4BA2F900FD43C9 /* DataPersistanceManager.swift */; };
+		38B738162C4BA69800FD43C9 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B738152C4BA69800FD43C9 /* UIImage+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +83,9 @@
 		38B737E22C4ADE7500FD43C9 /* Poppins-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Light.ttf"; sourceTree = "<group>"; };
 		38B737E92C4ADF1F00FD43C9 /* FontUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontUtils.swift; sourceTree = "<group>"; };
 		38B737EB2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Ext.swift"; sourceTree = "<group>"; };
+		38B738112C4BA08E00FD43C9 /* TitleModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TitleModel.xcdatamodel; sourceTree = "<group>"; };
+		38B738132C4BA2F900FD43C9 /* DataPersistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistanceManager.swift; sourceTree = "<group>"; };
+		38B738152C4BA69800FD43C9 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +102,7 @@
 		38B737842C481E3A00FD43C9 = {
 			isa = PBXGroup;
 			children = (
+				38B738102C4BA08E00FD43C9 /* TitleModel.xcdatamodeld */,
 				38B7378F2C481E3A00FD43C9 /* MovieApp */,
 				38B7378E2C481E3A00FD43C9 /* Products */,
 				7F61B9AC7C6586F16EBFADD7 /* Pods */,
@@ -133,6 +140,7 @@
 			children = (
 				38B737A72C4820AB00FD43C9 /* NetworkManager.swift */,
 				38B737E92C4ADF1F00FD43C9 /* FontUtils.swift */,
+				38B738132C4BA2F900FD43C9 /* DataPersistanceManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -178,6 +186,7 @@
 				38B737D12C4A58D200FD43C9 /* HeaderView.swift */,
 				38B737D32C4A62D500FD43C9 /* TitleTableViewCell.swift */,
 				38B737EB2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift */,
+				38B738152C4BA69800FD43C9 /* UIImage+Ext.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -320,6 +329,7 @@
 				38B737B42C48311400FD43C9 /* HomeViewModel.swift in Sources */,
 				38B737B22C482BB600FD43C9 /* TitleCollectionViewCell.swift in Sources */,
 				38B737912C481E3A00FD43C9 /* AppDelegate.swift in Sources */,
+				38B738142C4BA2F900FD43C9 /* DataPersistanceManager.swift in Sources */,
 				38B737A82C4820AB00FD43C9 /* NetworkManager.swift in Sources */,
 				38B737EC2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift in Sources */,
 				38B737D72C4AB22900FD43C9 /* TitleDetailViewController.swift in Sources */,
@@ -330,8 +340,10 @@
 				38B737932C481E3A00FD43C9 /* SceneDelegate.swift in Sources */,
 				38B737CE2C48F33F00FD43C9 /* SearchResponse.swift in Sources */,
 				38B737AC2C48272600FD43C9 /* Title.swift in Sources */,
+				38B738162C4BA69800FD43C9 /* UIImage+Ext.swift in Sources */,
 				38B737C32C48C49000FD43C9 /* YoutubeResponse.swift in Sources */,
 				38B737D22C4A58D200FD43C9 /* HeaderView.swift in Sources */,
+				38B738122C4BA08E00FD43C9 /* TitleModel.xcdatamodeld in Sources */,
 				38B737BF2C48B9CD00FD43C9 /* TitlePreviewViewController.swift in Sources */,
 				38B737EA2C4ADF1F00FD43C9 /* FontUtils.swift in Sources */,
 				38B737A52C48205200FD43C9 /* Constants.swift in Sources */,
@@ -555,6 +567,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		38B738102C4BA08E00FD43C9 /* TitleModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				38B738112C4BA08E00FD43C9 /* TitleModel.xcdatamodel */,
+			);
+			currentVersion = 38B738112C4BA08E00FD43C9 /* TitleModel.xcdatamodel */;
+			path = TitleModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 38B737852C481E3A00FD43C9 /* Project object */;
 }
