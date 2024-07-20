@@ -33,16 +33,18 @@ class DataPersistanceManager {
         return isHasChanges
     }
     
-    func convertToTitleEntity(_ title: Title, poster: UIImage?, context: NSManagedObjectContext) -> TitleEntity {
+    func convertToTitleEntity(_ title: Title, titleDetail: TitleDetail, poster: UIImage?, backdrop: UIImage?, context: NSManagedObjectContext) -> TitleEntity {
         let entity = TitleEntity(context: context)
         entity.category = title.category.rawValue
         entity.id = Int32(title.id)
-        entity.originalTitle = title.originalTitle
-        entity.originalName = title.originalName
+        entity.originalTitle = titleDetail.originalTitle ?? title.originalTitle
+        entity.originalName = titleDetail.name ?? title.originalName
         entity.overview = title.overview
+        entity.genre = titleDetail.genres.map({ $0.name }).joined(separator: ", ")
         entity.poster = poster?.jpegToBase64() ?? poster?.pngToBase64()
+        entity.backdrop = backdrop?.jpegToBase64() ?? backdrop?.pngToBase64()
         entity.posterPath = title.posterPath
-        entity.releaseDate = title.releaseDate
+        entity.releaseDate = title.category == .movie ? title.releaseDate : titleDetail.lastAirDate
         entity.voteAverage = title.voteAverage ?? 0
         entity.voteCount = Int32(title.voteCount ?? 0)
         return entity
@@ -70,7 +72,7 @@ class DataPersistanceManager {
     }
     
     // Return list of tuples containing title data and image base64
-    func fetchAllTitleData(completion: @escaping (Result<[(Title, String?)], Error>) -> Void) {
+    func fetchAllTitleData(completion: @escaping (Result<[(Title, String?, TitleDetail, String?)], Error>) -> Void) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDelegate.persistentContainer.viewContext
         
@@ -79,7 +81,7 @@ class DataPersistanceManager {
         
         do {
             let entities = try context.fetch(request)
-            let titles: [(Title, String?)] = entities.map { entity in
+            let titles: [(Title, String?, TitleDetail, String?)] = entities.map { entity in
                 let title = Title(
                     id: Int(entity.id),
                     mediaType: nil,
@@ -91,8 +93,23 @@ class DataPersistanceManager {
                     releaseDate: entity.releaseDate,
                     voteAverage: entity.voteAverage
                 )
+                let titleDetail = TitleDetail(
+                    backdropPath: nil,
+                    genres: entity.genre?.components(separatedBy: ", ").map({ substring in
+                        Genre(id: 0, name: substring.description)
+                    }) ?? [],
+                    homepage: "",
+                    title: title.originalTitle,
+                    name: title.originalName,
+                    originalTitle: title.originalTitle,
+                    overview: title.overview ?? "",
+                    posterPath: title.posterPath,
+                    releaseDate: entity.releaseDate,
+                    lastAirDate: entity.releaseDate
+                )
                 let imageBase64: String? = entity.poster
-                return (title, imageBase64)
+                let backdropBase64: String? = entity.backdrop
+                return (title, imageBase64, titleDetail, backdropBase64)
             }
             isHasChanges = false
             completion(.success(titles))
@@ -104,12 +121,12 @@ class DataPersistanceManager {
         }
     }
     
-    func addTitleData(_ title: Title, poster: UIImage?, completion: @escaping (Result<Title, Error>) -> Void) {
+    func addTitleData(_ title: Title, _ titleDetail: TitleDetail, poster: UIImage?, backdrop: UIImage?, completion: @escaping (Result<Title, Error>) -> Void) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDelegate.persistentContainer.viewContext
         
-        _ = convertToTitleEntity(title, poster: poster, context: context)
+        _ = convertToTitleEntity(title, titleDetail: titleDetail, poster: poster, backdrop: backdrop, context: context)
         
         do {
             try context.save()

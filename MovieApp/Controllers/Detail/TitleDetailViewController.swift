@@ -106,9 +106,9 @@ class TitleDetailViewController: UIViewController {
     
     var onPopViewController: (() -> Void)?
     
-    init(title: Title, poster: UIImage?, isUseOfflineData: Bool = false) {
-        self.viewModel = TitleDetailViewModel(title: title)
-        self.posterTemp = poster
+    init(title: Title, poster: UIImage?, titleDetail: TitleDetail? = nil, backdrop: UIImage? = nil, isUseOfflineData: Bool = false) {
+        self.viewModel = TitleDetailViewModel(title: title, titleDetail: titleDetail)
+        self.posterTemp = backdrop ?? poster
         self.isUseOfflineData = isUseOfflineData
         
         super.init(nibName: nil, bundle: nil)
@@ -135,8 +135,9 @@ class TitleDetailViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         backdropImageView.image = posterTemp
-        titleLabel.text = viewModel.title.originalTitle ?? viewModel.title.originalName
+        titleLabel.text = viewModel.titleDetail?.name ?? viewModel.title.originalTitle ?? viewModel.title.originalName
         durationLabel.text = viewModel.title.releaseDate?.split(separator: "-").first?.description
+        genreLabel.text = viewModel.titleDetail?.genres.map({ $0.name }).joined(separator: ", ")
         overviewLabel.text = viewModel.title.overview
         
         ratingLabel.text = "\(viewModel.title.voteAverage?.description ?? "0") (\(viewModel.title.voteCount?.description ?? "0") votes)"
@@ -388,7 +389,20 @@ class TitleDetailViewController: UIViewController {
                     releaseDate: viewModel.title.category == .movie ? viewModel.title.releaseDate : viewModel.titleDetail?.lastAirDate,
                     voteAverage: viewModel.title.voteAverage
                 )
-                self.viewModel.likeTitle(title, poster: self.posterTemp) {
+                let titleDetail = viewModel.titleDetail ?? TitleDetail(
+                    backdropPath: nil,
+                    genres: [],
+                    homepage: "",
+                    title: title.originalTitle,
+                    name: title.originalName,
+                    originalTitle: title.originalTitle,
+                    overview: title.overview ?? "",
+                    posterPath: title.posterPath,
+                    releaseDate: title.releaseDate,
+                    lastAirDate: title.releaseDate
+                )
+                let backdrop = self.backdropImageView.image
+                self.viewModel.likeTitle(title, titleDetail: titleDetail, poster: self.posterTemp, backdrop: backdrop) {
                     let image = UIImage(systemName: "heart.fill", withConfiguration: config)?.withRenderingMode(.alwaysTemplate)
                     self.likeButton.setImage(image, for: .normal)
                     self.likeButton.tintColor = .systemRed

@@ -68,8 +68,8 @@ extension LikedTitleViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let (model, posterImage) = viewModel.titlesWithPoster[indexPath.row]
-        cell.configure(with: model, posterImage: posterImage)
+        let (title, posterImage, _, _) = viewModel.titlesWithPoster[indexPath.row]
+        cell.configure(with: title, posterImage: posterImage)
         
         return cell
     }
@@ -81,8 +81,8 @@ extension LikedTitleViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let (title, poster) = viewModel.titlesWithPoster[indexPath.row]
-        let detailVC = TitleDetailViewController(title: title, poster: poster, isUseOfflineData: true)
+        let (title, poster, titleDetail, backdrop) = viewModel.titlesWithPoster[indexPath.row]
+        let detailVC = TitleDetailViewController(title: title, poster: poster, titleDetail: titleDetail, backdrop: backdrop, isUseOfflineData: true)
         DispatchQueue.main.async { [weak self] in
             self?.navigationController?.pushViewController(detailVC, animated: true)
         }

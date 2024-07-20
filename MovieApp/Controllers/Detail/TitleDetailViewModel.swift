@@ -14,8 +14,9 @@ class TitleDetailViewModel {
     
     private(set) var ongoingTask: URLSessionDataTask?
     
-    init(title: Title) {
+    init(title: Title, titleDetail: TitleDetail? = nil) {
         self.title = title
+        self.titleDetail = titleDetail
     }
     
     func getMovieDetail(completion: @escaping (TitleDetail) -> Void) {
@@ -40,8 +41,8 @@ class TitleDetailViewModel {
         }
     }
     
-    func likeTitle(_ title: Title, poster: UIImage?, completion: @escaping () -> Void) {
-        DataPersistanceManager.shared.addTitleData(title, poster: poster) { result in
+    func likeTitle(_ title: Title, titleDetail: TitleDetail, poster: UIImage?, backdrop: UIImage?, completion: @escaping () -> Void) {
+        DataPersistanceManager.shared.addTitleData(title, titleDetail, poster: poster, backdrop: backdrop) { result in
             switch result {
             case .success(_):
                 completion()
