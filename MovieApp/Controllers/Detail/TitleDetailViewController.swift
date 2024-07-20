@@ -93,7 +93,7 @@ class TitleDetailViewController: UIViewController {
         let label = UILabel()
         label.font = FontUtils.shared.getFont(font: .Poppins, weight: .regular, size: 14)
         label.numberOfLines = 0
-        label.textColor = .label
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
