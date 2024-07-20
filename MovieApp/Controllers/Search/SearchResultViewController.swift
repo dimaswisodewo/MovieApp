@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SearchResultViewDelegate: AnyObject {
+    func searchResultViewTableViewWillDisplay(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
+}
+
 class SearchResultViewController: UIViewController {
     
     private var searchResults: [Title] = []
@@ -17,12 +21,24 @@ class SearchResultViewController: UIViewController {
         return tv
     }()
     
+    weak var delegate: SearchResultViewDelegate?
+    
     var onDismissPreview: (() -> Void)?
     
     func configureSearchResults(results: [Title]) {
-        searchResults = results
+        searchResults.append(contentsOf: results)
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
+        }
+    }
+    
+    func resetSearchResults() {
+        searchResults.removeAll()
+    }
+    
+    func scrollToTop() {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         }
     }
     
@@ -46,6 +62,10 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        delegate?.searchResultViewTableViewWillDisplay(tableView, willDisplay: cell, forRowAt: indexPath)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

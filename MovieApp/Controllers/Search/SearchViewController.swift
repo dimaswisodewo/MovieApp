@@ -15,6 +15,8 @@ class SearchViewController: UIViewController {
     private let searchPublisher = CurrentValueSubject<String, Never>("")
     private var searchCancellable: AnyCancellable?
     private var lastQuery: String = ""
+    private var isUpdating: Bool = false
+    private var isNewSearch: Bool = true
     
     private lazy var searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: self.searchResultViewController)
@@ -57,11 +59,12 @@ class SearchViewController: UIViewController {
         navigationItem.searchController?.searchResultsUpdater = self
         navigationItem.searchController?.showsSearchResultsController = true
         
+        searchResultViewController.delegate = self
+        
         searchResultViewController.onDismissPreview = { [weak self] in
             guard let self = self else { return }
             
             searchController.searchBar.text = self.lastQuery
-            self.searchResultViewController.configureSearchResults(results: self.viewModel.lastSearchResults)
         }
         
         collectionView.delegate = self
@@ -112,9 +115,10 @@ class SearchViewController: UIViewController {
                 self.lastQuery = finalQuery
                 
                 self.viewModel.ongoingTask?.cancel()
-                self.viewModel.getSearchCollection(query: finalQuery) { searchResults in
-                    self.searchResultViewController.configureSearchResults(results: searchResults)
-                }
+                self.viewModel.resetSearchResults()
+                self.searchResultViewController.resetSearchResults()
+                self.isNewSearch = true
+                self.fetchSearchResults()
             })
     }
     
@@ -122,6 +126,19 @@ class SearchViewController: UIViewController {
         viewModel.getDiscoverMovies { [weak self] in
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
+            }
+        }
+    }
+    
+    private func fetchSearchResults() {
+        isUpdating = true
+        viewModel.getSearchCollection(query: lastQuery) { [weak self] searchResults in
+            self?.searchResultViewController.configureSearchResults(results: searchResults)
+            self?.isUpdating = false
+            
+            if self?.isNewSearch == true {
+                self?.searchResultViewController.scrollToTop()
+                self?.isNewSearch = false
             }
         }
     }
@@ -170,6 +187,17 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let detailVC = TitleDetailViewController(title: title, poster: poster)
         DispatchQueue.main.async { [weak self] in
             self?.navigationController?.pushViewController(detailVC, animated: true)
+        }
+    }
+}
+
+// MARK: - SearchResultViewDelegate
+
+extension SearchViewController: SearchResultViewDelegate {
+    
+    func searchResultViewTableViewWillDisplay(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if (indexPath.row >= viewModel.lastSearchResults.count - 1) && !lastQuery.isEmpty && !isUpdating && !viewModel.isLastPageReached {
+            fetchSearchResults()
         }
     }
 }
