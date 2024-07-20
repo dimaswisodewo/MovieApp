@@ -34,6 +34,7 @@ class TitlePreviewViewModel {
             method: .GET
         )
         
+        // Youtube Data API 3 give 10000 token limitation per day, searching cost 100 token per API call. When exceed limit, will return 403
         ongoingTask = NetworkManager.shared.sendRequest(type: YoutubeResponse.self, endpoint: endpoint, header: headers) { [weak self] result in
             switch result {
             case .success(let youtubeResponse):
