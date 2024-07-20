@@ -44,6 +44,8 @@
 		38B738122C4BA08E00FD43C9 /* TitleModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 38B738102C4BA08E00FD43C9 /* TitleModel.xcdatamodeld */; };
 		38B738142C4BA2F900FD43C9 /* DataPersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B738132C4BA2F900FD43C9 /* DataPersistanceManager.swift */; };
 		38B738162C4BA69800FD43C9 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B738152C4BA69800FD43C9 /* UIImage+Ext.swift */; };
+		38B738192C4BB30800FD43C9 /* LikedTitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B738182C4BB30800FD43C9 /* LikedTitleViewController.swift */; };
+		38B7381B2C4BB31C00FD43C9 /* LikedTitleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B7381A2C4BB31C00FD43C9 /* LikedTitleViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +88,8 @@
 		38B738112C4BA08E00FD43C9 /* TitleModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TitleModel.xcdatamodel; sourceTree = "<group>"; };
 		38B738132C4BA2F900FD43C9 /* DataPersistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPersistanceManager.swift; sourceTree = "<group>"; };
 		38B738152C4BA69800FD43C9 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
+		38B738182C4BB30800FD43C9 /* LikedTitleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedTitleViewController.swift; sourceTree = "<group>"; };
+		38B7381A2C4BB31C00FD43C9 /* LikedTitleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedTitleViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +172,7 @@
 		38B737AD2C48280D00FD43C9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				38B738172C4BB2EB00FD43C9 /* LikedTitle */,
 				38B737D52C4AB21200FD43C9 /* Detail */,
 				38B737BC2C48B97700FD43C9 /* Home */,
 				38B737BD2C48B99200FD43C9 /* Preview */,
@@ -239,6 +244,15 @@
 				38B737E02C4ADE7500FD43C9 /* Poppins-SemiBold.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		38B738172C4BB2EB00FD43C9 /* LikedTitle */ = {
+			isa = PBXGroup;
+			children = (
+				38B738182C4BB30800FD43C9 /* LikedTitleViewController.swift */,
+				38B7381A2C4BB31C00FD43C9 /* LikedTitleViewModel.swift */,
+			);
+			path = LikedTitle;
 			sourceTree = "<group>";
 		};
 		7F61B9AC7C6586F16EBFADD7 /* Pods */ = {
@@ -333,8 +347,10 @@
 				38B737A82C4820AB00FD43C9 /* NetworkManager.swift in Sources */,
 				38B737EC2C4AEBEE00FD43C9 /* UINavigationController+Ext.swift in Sources */,
 				38B737D72C4AB22900FD43C9 /* TitleDetailViewController.swift in Sources */,
+				38B738192C4BB30800FD43C9 /* LikedTitleViewController.swift in Sources */,
 				38B737B02C48294600FD43C9 /* CollectionViewTableViewCell.swift in Sources */,
 				38B737D42C4A62D500FD43C9 /* TitleTableViewCell.swift in Sources */,
+				38B7381B2C4BB31C00FD43C9 /* LikedTitleViewModel.swift in Sources */,
 				38B737DB2C4AB34500FD43C9 /* TitleDetail.swift in Sources */,
 				38B737D92C4AB23400FD43C9 /* TitleDetailViewModel.swift in Sources */,
 				38B737932C481E3A00FD43C9 /* SceneDelegate.swift in Sources */,

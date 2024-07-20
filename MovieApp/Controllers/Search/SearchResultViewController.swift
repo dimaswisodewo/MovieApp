@@ -88,7 +88,7 @@ extension SearchResultViewController: UITableViewDelegate, UITableViewDataSource
         
         guard let cell = tableView.cellForRow(at: indexPath) as? TitleTableViewCell else { return }
         
-        let title = searchResults[indexPath.item]
+        let title = searchResults[indexPath.row]
         let poster = cell.poster
         let detailVC = TitleDetailViewController(title: title, poster: poster)
         

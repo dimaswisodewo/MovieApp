@@ -15,9 +15,13 @@ enum DatabaseError: Error {
     case failedToDelete
 }
 
+// TODO: Nyimpen backdrop image + genres
+
 class DataPersistanceManager {
     
     static let shared = DataPersistanceManager()
+    
+    private var isHasChanges = false
     
     private init() {}
     
@@ -25,10 +29,15 @@ class DataPersistanceManager {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     }
     
+    func isNeedToRefresh() -> Bool {
+        return isHasChanges
+    }
+    
     func convertToTitleEntity(_ title: Title, poster: UIImage?, context: NSManagedObjectContext) -> TitleEntity {
         let entity = TitleEntity(context: context)
         entity.category = title.category.rawValue
         entity.id = Int32(title.id)
+        entity.originalTitle = title.originalTitle
         entity.originalName = title.originalName
         entity.overview = title.overview
         entity.poster = poster?.jpegToBase64() ?? poster?.pngToBase64()
@@ -37,6 +46,27 @@ class DataPersistanceManager {
         entity.voteAverage = title.voteAverage ?? 0
         entity.voteCount = Int32(title.voteCount ?? 0)
         return entity
+    }
+    
+    func isTitleExistsInDatabase(titleId: Int, completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let predicate = NSPredicate(format: "id = %@", titleId.description)
+        
+        let request: NSFetchRequest<TitleEntity>
+        request = TitleEntity.fetchRequest()
+        request.predicate = predicate
+        
+        do {
+            let fetchedData = try context.fetch(request)
+            completion(.success(fetchedData.count > 0))
+        } catch {
+#if DEBUG
+            print(DatabaseError.failedToFetch)
+#endif
+            completion(.failure(DatabaseError.failedToFetch))
+        }
     }
     
     // Return list of tuples containing title data and image base64
@@ -64,8 +94,12 @@ class DataPersistanceManager {
                 let imageBase64: String? = entity.poster
                 return (title, imageBase64)
             }
+            isHasChanges = false
             completion(.success(titles))
         } catch {
+#if DEBUG
+            print(DatabaseError.failedToFetch)
+#endif
             completion(.failure(DatabaseError.failedToFetch))
         }
     }
@@ -75,12 +109,16 @@ class DataPersistanceManager {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDelegate.persistentContainer.viewContext
         
-        let entity = convertToTitleEntity(title, poster: poster, context: context)
+        _ = convertToTitleEntity(title, poster: poster, context: context)
         
         do {
             try context.save()
+            isHasChanges = true
             completion(.success(title))
         } catch {
+#if DEBUG
+            print(DatabaseError.failedToAdd)
+#endif
             completion(.failure(DatabaseError.failedToAdd))
         }
     }
@@ -90,7 +128,7 @@ class DataPersistanceManager {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDelegate.persistentContainer.viewContext
         
-        let predicate = NSPredicate(format: "id = %@", titleId)
+        let predicate = NSPredicate(format: "id = %@", titleId.description)
         
         let request: NSFetchRequest<TitleEntity>
         request = TitleEntity.fetchRequest()
@@ -98,7 +136,9 @@ class DataPersistanceManager {
         
         do {
             guard let entity = try context.fetch(request).first else {
+#if DEBUG
                 print("There is not saved title with id: \(titleId)")
+#endif
                 throw DatabaseError.failedToUpdate
             }
             
@@ -113,8 +153,12 @@ class DataPersistanceManager {
             entity.voteCount = Int32(newTitle.voteCount ?? 0)
             
             try context.save()
+            isHasChanges = true
             completion(.success(newTitle))
         } catch {
+#if DEBUG
+            print(DatabaseError.failedToUpdate)
+#endif
             completion(.failure(DatabaseError.failedToUpdate))
         }
     }
@@ -124,7 +168,7 @@ class DataPersistanceManager {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDelegate.persistentContainer.viewContext
         
-        let predicate = NSPredicate(format: "id = %@", titleId)
+        let predicate = NSPredicate(format: "id = %@", titleId.description)
         
         let request: NSFetchRequest<TitleEntity>
         request = TitleEntity.fetchRequest()
@@ -132,16 +176,22 @@ class DataPersistanceManager {
         
         do {
             guard let entity = try context.fetch(request).first else {
+#if DEBUG
                 print("There is not saved title with id: \(titleId)")
+#endif
                 throw DatabaseError.failedToUpdate
             }
             
             context.delete(entity)
             
             try context.save()
+            isHasChanges = true
             completion(.success(()))
         } catch {
-            completion(.failure(DatabaseError.failedToUpdate))
+#if DEBUG
+            print(DatabaseError.failedToDelete)
+#endif
+            completion(.failure(DatabaseError.failedToDelete))
         }
     }
 }

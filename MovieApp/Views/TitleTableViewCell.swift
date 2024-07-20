@@ -13,6 +13,7 @@ class TitleTableViewCell: UITableViewCell {
     
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 12
         imageView.layer.masksToBounds = true
         imageView.backgroundColor = .gray
@@ -114,16 +115,15 @@ class TitleTableViewCell: UITableViewCell {
         ])
     }
     
-    func configure(with model: Title) {
+    func configure(with model: Title, posterImage: UIImage? = nil) {
         titleLabel.text = model.originalTitle ?? model.originalName ?? "Null"
         subtitleLabel.text = model.releaseDate?.split(separator: "-").first?.description ?? "Null"
         descriptionLabel.text = "\(model.voteAverage?.description ?? "") (\(model.voteCount?.description ?? "") votes)"
         
-        guard let posterPath = model.posterPath,
-              let url = URL(string: "\(Constants.imagePreviewBaseURL)\(posterPath)") else {
-            return
+        if let img = posterImage {
+            posterImageView.image = img
+        } else if let posterPath = model.posterPath, let url = URL(string: "\(Constants.imagePreviewBaseURL)\(posterPath)") {
+            posterImageView.load(url: url, placeholder: nil)
         }
-        
-        posterImageView.load(url: url, placeholder: nil)
     }
 }

@@ -30,6 +30,18 @@ class TitleDetailViewController: UIViewController {
         return button
     }()
     
+    private let likeButton: UIButton = {
+        let button = UIButton(type: .custom)
+        let config = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20, weight: .regular), scale: .large)
+        let image = UIImage(systemName: "heart", withConfiguration: config)?.withRenderingMode(.alwaysTemplate)
+        button.setImage(image, for: .normal)
+        button.backgroundColor = .black.withAlphaComponent(0.5)
+        button.layer.cornerRadius = 25
+        button.tintColor = .white
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let watchTrailerButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("Watch Trailer", for: .normal)
@@ -89,19 +101,24 @@ class TitleDetailViewController: UIViewController {
     private let viewModel: TitleDetailViewModel
     
     private let posterTemp: UIImage?
+    private let isUseOfflineData: Bool
+    private var isGradientAdded = false
     
     var onPopViewController: (() -> Void)?
     
-    init(title: Title, poster: UIImage?) {
-        viewModel = TitleDetailViewModel(title: title)
-        posterTemp = poster
+    init(title: Title, poster: UIImage?, isUseOfflineData: Bool = false) {
+        self.viewModel = TitleDetailViewModel(title: title)
+        self.posterTemp = poster
+        self.isUseOfflineData = isUseOfflineData
         
         super.init(nibName: nil, bundle: nil)
         
         // Disable watch trailer, can't search trailer on youtube when title is nil
         watchTrailerButton.isEnabled = !(title.originalTitle == nil && title.originalName == nil)
         
-        fetchData()
+        if !isUseOfflineData {
+            fetchData()
+        }
     }
     
     deinit {
@@ -124,6 +141,24 @@ class TitleDetailViewController: UIViewController {
         
         ratingLabel.text = "\(viewModel.title.voteAverage?.description ?? "0") (\(viewModel.title.voteCount?.description ?? "0") votes)"
         
+        viewModel.isTitleLiked(titleId: viewModel.title.id) { [weak self] isLiked in
+            guard let self = self else { return }
+            let config = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20, weight: .regular), scale: .large)
+            if isLiked {
+                DispatchQueue.main.async {
+                    let image = UIImage(systemName: "heart.fill", withConfiguration: config)?.withRenderingMode(.alwaysTemplate)
+                    self.likeButton.setImage(image, for: .normal)
+                    self.likeButton.tintColor = .systemRed
+                }
+            } else {
+                DispatchQueue.main.async {
+                    let image = UIImage(systemName: "heart", withConfiguration: config)?.withRenderingMode(.alwaysTemplate)
+                    self.likeButton.setImage(image, for: .normal)
+                    self.likeButton.tintColor = .white
+                }
+            }
+        }
+        
         setupViews()
         setupButtonEvents()
     }
@@ -131,7 +166,10 @@ class TitleDetailViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        addGradient()
+        if !isGradientAdded {
+            addGradient()
+            isGradientAdded = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -184,6 +222,7 @@ class TitleDetailViewController: UIViewController {
         
         view.addSubview(backdropImageView)
         view.addSubview(backButton)
+        view.addSubview(likeButton)
         view.addSubview(titleLabel)
         view.addSubview(durationLabel)
         view.addSubview(genreLabel)
@@ -207,6 +246,13 @@ class TitleDetailViewController: UIViewController {
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             backButton.widthAnchor.constraint(equalToConstant: 50),
             backButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        NSLayoutConstraint.activate([
+            likeButton.topAnchor.constraint(equalTo: guide.topAnchor),
+            likeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            likeButton.widthAnchor.constraint(equalToConstant: 50),
+            likeButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         NSLayoutConstraint.activate([
@@ -275,6 +321,7 @@ class TitleDetailViewController: UIViewController {
     
     private func setupButtonEvents() {
         backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         watchTrailerButton.addTarget(self, action: #selector(didTapWatchTrailerButton), for: .touchUpInside)
     }
     
@@ -313,6 +360,40 @@ class TitleDetailViewController: UIViewController {
             navigationController?.popViewController(animated: true, completion: completion)
         } else {
             navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    @objc
+    private func didTapLikeButton() {
+        viewModel.isTitleLiked(titleId: viewModel.title.id) { [weak self] isLiked in
+            guard let self = self else { return }
+            let config = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20, weight: .regular), scale: .large)
+            if isLiked {
+                self.viewModel.unlikeTitle(titleId: viewModel.title.id) {
+                    DispatchQueue.main.async {
+                        let image = UIImage(systemName: "heart", withConfiguration: config)?.withRenderingMode(.alwaysTemplate)
+                        self.likeButton.setImage(image, for: .normal)
+                        self.likeButton.tintColor = .white
+                    }
+                }
+            } else {
+                let title = Title(
+                    id: viewModel.title.id,
+                    mediaType: viewModel.title.mediaType,
+                    originalTitle: viewModel.title.originalTitle,
+                    originalName: viewModel.title.originalName,
+                    posterPath: viewModel.title.posterPath,
+                    overview: viewModel.title.overview,
+                    voteCount: viewModel.title.voteCount,
+                    releaseDate: viewModel.title.category == .movie ? viewModel.title.releaseDate : viewModel.titleDetail?.lastAirDate,
+                    voteAverage: viewModel.title.voteAverage
+                )
+                self.viewModel.likeTitle(title, poster: self.posterTemp) {
+                    let image = UIImage(systemName: "heart.fill", withConfiguration: config)?.withRenderingMode(.alwaysTemplate)
+                    self.likeButton.setImage(image, for: .normal)
+                    self.likeButton.tintColor = .systemRed
+                }
+            }
         }
     }
     

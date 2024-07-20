@@ -41,7 +41,9 @@ class FontUtils {
             break
         }
         guard let font = UIFont(name: fontName, size: size) else {
+#if DEBUG
             print("Failed to get font: \(fontName)")
+#endif
             return UIFont.systemFont(ofSize: size)
         }
         return font

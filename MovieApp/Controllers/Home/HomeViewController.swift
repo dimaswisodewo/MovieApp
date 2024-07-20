@@ -44,6 +44,10 @@ class HomeViewController: UIViewController {
         configureRefreshControl()
         
         fetchData()
+        
+#if DEBUG
+        print(DataPersistanceManager.shared.getDatabaseLocation())
+#endif
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,16 +74,10 @@ class HomeViewController: UIViewController {
         let leftBarButtonItem = UIBarButtonItem(customView: imageContainer)
         leftBarButtonItem.width = 20
         
-        let searchImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        searchImageView.image = UIImage(systemName: "magnifyingglass")
-        let searchContainer = UIControl(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        searchContainer.addTarget(self, action: #selector(didTapSearchButton), for: .touchUpInside)
-        searchContainer.addSubview(searchImageView)
-        
         navigationItem.leftBarButtonItem = leftBarButtonItem
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(image: UIImage(systemName: "rectangle.portrait.and.arrow.forward"), style: .done, target: self, action: nil),
-            UIBarButtonItem(customView: searchContainer)
+            UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(didTapHeartButton)),
+            UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(didTapSearchButton)),
         ]
         
         navigationController?.navigationBar.tintColor = .label
@@ -108,6 +106,12 @@ class HomeViewController: UIViewController {
     private func didTapSearchButton() {
         let searchVC = SearchViewController()
         navigationController?.pushViewController(searchVC, animated: true)
+    }
+    
+    @objc
+    private func didTapHeartButton() {
+        let likedVC = LikedTitleViewController()
+        navigationController?.pushViewController(likedVC, animated: true)
     }
     
     private func fetchData() {

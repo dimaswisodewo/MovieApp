@@ -5,7 +5,7 @@
 //  Created by Dimas Wisodewo on 19/07/24.
 //
 
-import Foundation
+import UIKit
 
 class TitleDetailViewModel {
     
@@ -37,6 +37,42 @@ class TitleDetailViewModel {
             }
             
             self?.ongoingTask = nil
+        }
+    }
+    
+    func likeTitle(_ title: Title, poster: UIImage?, completion: @escaping () -> Void) {
+        DataPersistanceManager.shared.addTitleData(title, poster: poster) { result in
+            switch result {
+            case .success(_):
+                completion()
+                
+            case .failure(_):
+                break
+            }
+        }
+    }
+    
+    func unlikeTitle(titleId: Int, completion: @escaping () -> Void) {
+        DataPersistanceManager.shared.deleteTitleData(titleId: titleId) { result in
+            switch result {
+            case .success(_):
+                completion()
+                
+            case .failure(_):
+                break
+            }
+        }
+    }
+    
+    func isTitleLiked(titleId: Int, completion: @escaping (Bool) -> Void) {
+        DataPersistanceManager.shared.isTitleExistsInDatabase(titleId: titleId) { result in
+            switch result {
+            case .success(let isExists):
+                completion(isExists)
+                
+            case .failure(_):
+                break
+            }
         }
     }
 }

@@ -55,6 +55,7 @@ class SearchViewController: UIViewController {
         
         title = "Discover"
         navigationController?.navigationBar.prefersLargeTitles = true
+        
         navigationItem.searchController = searchController
         navigationItem.searchController?.searchResultsUpdater = self
         navigationItem.searchController?.showsSearchResultsController = true
